@@ -1,0 +1,16 @@
+{% extends 'quiz/indextemplate.html' %}
+
+{% block title %}
+search : {{query}}
+{% endblock %}
+
+{% block hero %}
+
+<div class="mb-5">
+    <span class="text-muted">results for</span> <strong>{{ query }}</strong>
+    {% if message %}
+    <p class="text-warning m-0"> {{ message }}</p>
+    {% endif %}
+</div>
+
+{% endblock %}

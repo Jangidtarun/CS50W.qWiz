@@ -1,0 +1,49 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+
+{% block title %}
+Instant <i class="bi bi-add"></i>
+{% endblock %}
+
+{% block body %}
+
+
+<div class="fs-1 text-center" id="countdown">...</div>
+
+<div id="main-div">
+    <div class="d-flex justify-content-between mb-2" id="tbox">
+        <div>
+            <span class="fs-3" id="timer"></span>s remaining
+        </div>
+        <div>
+            score: <span class="fs-3" id="score">0</span>
+        </div>
+        <div>
+            <i class="bi bi-suit-heart-fill text-danger fs-3">
+                <span id="lives"></span>
+            </i>
+        </div>
+    </div>
+
+    <div id="qbox">
+        <div id="qdiv"></div>
+        <div id="obox"></div>
+    </div>
+
+    <div class="d-flex mt-3 justify-content-between">
+        <button class="btn btn-success" id="submit-btn">Submit</button>
+        <button class="btn btn-info" id="skip-btn">skip</button>
+    </div>
+</div>
+
+<div id="mbox">
+    <div id="messageDiv"></div>
+    <div id="results" class="fs-1 text-success"></div>
+    <small class="fs-6">reload the page to take the quiz again or go to
+        <a class="fw-bolder" href="{% url 'index' %}">Home</a>
+    </small>
+</div>
+
+
+<script src="{% static 'quiz/js/instant.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'quiz/createtemplate.html' %}
+
+{% block title %}
+Edit question {{question.body|truncatechars:10}}
+{% endblock %}
+
+
+{% block form %}
+<form class="d-flex flex-column align-items-center needs-validation" action="{% url 'edit' question.pk %}"
+    method="post">
+    {% csrf_token %}
+
+    <div class="input-group mb-3">
+        <input class="form-control" type="number" name="points" id="points" min="1" value="{{ question.points }}">
+        <input class="form-control" type="text" name="taglist" id="taginput" placeholder="topics..."
+            value="{{ topiclist }}">
+    </div>
+
+    <textarea class="form-control mb-3" name="question" id="question" required>{{ question.body }}</textarea>
+
+    {% for option in question.options.all %}
+    {% if forloop.counter == 1 %}
+    <input class="form-control mb-3" type="text" name="option{{forloop.counter}}" id="option{{forloop.counter}}"
+        required value="{{option.body}}" placeholder="option {{forloop.counter}} [correct option]">
+    {% else %}
+    <input class="form-control mb-3" type="text" name="option{{forloop.counter}}" id="option{{forloop.counter}}"
+        required value="{{option.body}}" placeholder="option {{forloop.counter}}">
+    {% endif %}
+    {% endfor %}
+
+    <div class="d-flex justify-content-around w-100">
+        <a class="btn btn-danger" href="{% url 'delete' question.pk %}">delete</a>
+        <button class="btn btn-success" type="submit">update</button>
+    </div>
+</form>
+{% endblock %}

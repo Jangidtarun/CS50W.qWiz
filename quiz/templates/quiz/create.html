@@ -1,0 +1,25 @@
+{% extends 'quiz/createtemplate.html' %}
+
+{% block title %}
+Create a question {{question.body|truncatechars:10}}
+{% endblock %}
+
+{% block form %}
+<form class="d-flex flex-column align-items-center needs-validation" action="{% url 'create' %}" method="post">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        <input class="form-control" type="number" required name="points" id="points" min="1" value="1" max="50">
+        <input class="form-control" type="text" name="taglist" id="taginput" placeholder="topics...">
+    </div>
+
+    <textarea class="form-control mb-3" name="question" id="question" placeholder="Write your question here..."
+        required></textarea>
+
+    <input class="form-control mb-3" type="text" name="option1" id="option1" placeholder="option 1 [correct option]"
+        required>
+    <input class="form-control mb-3" type="text" name="option2" id="option2" placeholder="option 2" required>
+    <input class="form-control mb-3" type="text" name="option3" id="option3" placeholder="option 3" required>
+    <input class="form-control mb-3" type="text" name="option4" id="option4" placeholder="option 4" required>
+    <button class="btn btn-primary" type="submit">create</button>
+</form>
+{% endblock %}

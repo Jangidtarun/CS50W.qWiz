@@ -1,0 +1,19 @@
+{% extends 'quiz/indextemplate.html' %}
+
+{% block title %}
+Topic : {{topic}}
+{% endblock %}
+
+{% block hero %}
+<div class="mb-4">Question with topic <span class="fs-3 fw-semibold">{{ topic }}</span></div>
+{% endblock %}
+
+{% block noquestion %}
+results for <strong>{{ topic }}</strong><br>
+No questions in this topic create a new question <a href="#">here</a> <br>
+or search for other topics
+{% for topic in topics %}
+<div class="badge bg-body-secondary"><a href="{% url 'qwtopic' topic.name %}">
+                {{ topic }}</a></div>
+{% endfor %}
+{% endblock %}

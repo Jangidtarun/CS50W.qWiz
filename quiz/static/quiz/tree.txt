@@ -1,0 +1,30 @@
+.
+|-- icons
+|   |-- bright.svg
+|   |-- create.svg
+|   |-- dark.svg
+|   |-- delete.svg
+|   |-- edit.svg
+|   |-- home.svg
+|   |-- instant_quiz.svg
+|   |-- logout.svg
+|   |-- profile.svg
+|   |-- quiz.svg
+|   |-- search.svg
+|   `-- topic.svg
+|-- js
+|   |-- emailverify.js
+|   |-- instant.js
+|   |-- link-theme-setter.js
+|   |-- profile.js
+|   |-- question.js
+|   |-- sidebar.js
+|   |-- theme.js
+|   `-- tmp-instant.js
+|-- styles
+|   |-- mstyle.css
+|   |-- mstyle.css.map
+|   `-- mstyle.scss
+`-- tree.txt
+
+4 directories, 24 files

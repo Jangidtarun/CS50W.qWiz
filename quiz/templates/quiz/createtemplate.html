@@ -1,0 +1,31 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+
+{% block title %}
+Edit question {{question.body|truncatechars:10}}
+{% endblock %}
+
+
+{% block body %}
+
+<h3>Instructions</h3>
+<ul>
+    <li class="text-muted">Latex is available to be used in questions and options <small class="text-warning">[see
+            instructions <a href="#">here</a>]</small></li>
+    <li class="text-muted">Enter the <span class="text-warning">correct option in the first option field</span> they
+        will be reandomized later</li>
+    <li class="text-muted">The question must be of minimum <span class="text-warning text-bolder">1</span> point
+    </li>
+    <li class="text-muted">You must mention one or more topics for the question <small class="text-warning">[view
+            full list <a href="{% url 'topics' %}">here</a>]</small></li>
+    <li class="text-muted">Each topic should be saperated by a comma</li>
+</ul>
+
+
+<p class="text-success">{{ message }}</p>
+<p class="text-danger">{{ err_message }}</p>
+
+{% block form %}
+{% endblock %}
+
+{% endblock %}

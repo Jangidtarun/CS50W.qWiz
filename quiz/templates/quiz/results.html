@@ -1,0 +1,49 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+
+{% block title %}
+Results
+{% endblock %}
+
+
+{% block body %}
+<div class="mb-5">
+
+    {% if user.is_authenticated %}
+    <h1 class="fs-1 fw-bolder">hello, {{ user.username }} 🙂</h1>
+    {% else %}
+    <h1 class="fs-1 fw-bolder">hello, stranger 🙂</h1>
+    {% endif %}
+    <p>you have completed your quiz and here's what you got</p>
+    <h1 class="fs-1 text-success">{{ obtained_score }} / {{ total_score }}</h1>
+
+</div>
+
+{% for ans in result.user_answers.all %}
+<div class="d-flex flex-column w-100 mb-5">
+    <input type="hidden" name="questions" value="{{ ans.question.id }}">
+    <div class="d-flex justify-content-between">
+        <div> <span class="me-2 fw-bolder fs-5">{{forloop.counter}}. </span> {{ ans.question.body }}</div>
+        <div class="points">{{ ans.question.points }}</div>
+    </div>
+    <div id="obox">
+        {% for choice in ans.question.options.all %}
+        {% if choice == ans.selected_option and choice.is_correct %}
+        <input disabled type="radio" id="option-{{ choice.id }}" class="correct selected"
+            name="option-{{ ans.question.id }}" value="{{ choice.id }}">
+        {% elif choice == ans.selected_option %}
+        <input disabled type="radio" id="option-{{ choice.id }}" class="selected" name="option-{{ ans.question.id }}"
+            value="{{ choice.id }}">
+        {% elif choice.is_correct %}
+        <input disabled type="radio" id="option-{{ choice.id }}" class="correct" name="option-{{ ans.question.id }}"
+            value="{{ choice.id }}">
+        {% else %}
+        <input disabled type="radio" id="option-{{ choice.id }}" name="option-{{ ans.question.id }}"
+            value="{{ choice.id }}">
+        {% endif %}
+        <div><label for="option-{{ choice.id }}">{{ choice.body }}</label></div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

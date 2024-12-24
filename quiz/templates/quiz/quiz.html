@@ -1,0 +1,59 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+
+{% block title %}
+Quiz is progress
+{% endblock %}
+
+{% block body %}
+
+{% if quiz.is_finished %}
+quiz is finished
+{% else %}
+
+<div class="title text-center">
+    qWiz
+    <div class="mt-2 d-flex justify-content-around">
+        <div class="qdetail">
+            Total Score <br> {{ total_score }}
+        </div>
+        <div class="qdetail">
+            Number of Questions <br> {{ noq }}
+        </div>
+    </div>
+</div>
+
+{% if message %}
+<p>selected category: <strong>{{ category.name|title }}</strong></p>
+<p class="text-warning">{{ message }}</p>
+<a href="{% url 'create' %}">Add a question</a>
+{% else %}
+
+<form action="{% url 'submit' %}" method="post" id="quiz-form">
+    {% csrf_token %}
+
+    <input type="hidden" name="quiz_id" value="{{quiz.id}}">
+
+    {% for t in quiz_data %}
+    <div class="d-flex flex-column w-100 mb-5">
+        <input type="hidden" name="questions" value="{{ t.question.id }}">
+        <div class="d-flex justify-content-between">
+            <div> <span class="me-2 fw-bolder fs-5">{{forloop.counter}}. </span> {{ t.question.body }}</div>
+            <div class="points">{{ t.question.points }}</div>
+        </div>
+        <div id="obox">
+            {% for choice in t.choices %}
+            <input type="radio" id="option-{{ choice.id }}" name="option-{{ t.question.id }}" value="{{ choice.id }}">
+            <div><label for="option-{{ choice.id }}">{{ choice.body }}</label></div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-success" type="submit" id="submit">submit</button>
+    </div>
+</form>
+{% endif %}
+{% endif %}
+
+{% endblock %}

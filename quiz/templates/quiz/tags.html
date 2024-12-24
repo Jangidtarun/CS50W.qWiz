@@ -1,0 +1,32 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+
+{% block title %}
+Topics
+{% endblock %}
+
+
+{% block body %}
+<h1>Topics</h1>
+
+<form class="form-topic" action="{% url 'topics' %}" method="post">
+    <p class="text-danger">{{ err_message }}</p>
+    {% csrf_token %}
+    <div class="form-floating">
+        <input class="form-control" required type="text" name="name" id="name" placeholder="ex. chess" autofocus>
+        <label for="name">Topic</label>
+    </div>
+    <div class="d-flex justify-content-center w-100 mt-2">
+        <button class="btn btn-primary w-100" type="submit">
+            <i class="bi bi-plus-square-fill"></i>
+            Add</button>
+    </div>
+</form>
+
+<div class="mt-5">
+    {% for topic in tags %}
+    <div class="badge bg-body-secondary me-1 mb-1"><a href="{% url 'qwtopic' topic.name %}">{{ topic.name }}</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

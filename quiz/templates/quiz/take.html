@@ -1,0 +1,39 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+
+{% block title %}
+Take a quiz
+{% endblock %}
+
+{% block body %}
+<div class="mt-5">
+    <h3>Instructions</h3>
+    <ul>
+        <li class="text-muted">Select the number of questions for the quiz</li>
+        <li class="text-muted">Then select topics for in which you want a quiz <small class="text-warning">[view
+                full list <a href="{% url 'topics' %}">here</a>]</small></li>
+
+        {% if not user.is_authenticated %}
+        <li class="text-warning">Login to save your progress</li>
+        {% endif %}
+    </ul>
+</div>
+
+
+<p class="text-danger">{{ err_message }}</p>
+<form id="parameter-form" action="{% url 'take' %}" method="post">
+    {% csrf_token %}
+
+    <label for="noq">Number of questions</label>
+    <input class="form-control mb-3" type="number" name="noq" id="noq" placeholder="number of question" min="1"
+        value="5" max="20">
+
+    <label for="taginput">List of topics</label>
+    <input class="form-control mb-3" type="text" name="taglist" id="taginput" placeholder="enter the topics..."
+        required>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" type="submit">Take Quiz</button>
+    </div>
+</form>
+{% endblock %}

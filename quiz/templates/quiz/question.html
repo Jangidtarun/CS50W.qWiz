@@ -1,0 +1,128 @@
+{% extends 'quiz/base.html' %}
+{% load static %}
+
+{% block title %}
+Question {{question.body|truncatechars:10}}
+{% endblock %}
+
+
+{% block body %}
+
+<div class="qbox2 mt-5 mb-3">
+    <p class="m-0 fw-semibold">{{ question.body }}</p>
+    <div class="d-flex my-2 justify-content-between">
+        <div>
+            {% for topic in question.topics.all %}
+            <div class="badge bg-body-secondary"><a href="{% url 'qwtopic' topic.name %}">{{ topic }}</a></div>
+            {% endfor %}
+        </div>
+        {% if question.created_by %}
+        <a href="{% url 'view_profile' question.created_by.id %}">
+            <div class="user-card bg-body-secondary">
+                {% if question.created_by.photo %}
+                <img src="{{question.created_by.photo.url}}" width="32" height="32" class="rounded-2 me-2">
+                {% else %}
+                <div class="profile-icon">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                {% endif %}
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="fw-semibold">{{ question.created_by.username }}</p>
+                </div>
+            </div>
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="d-flex">
+    <div class="vote-box input-group">
+        {% if user.is_authenticated %}
+        {% if showdownvote %}
+        <button class="disabled btn btn-secondary" id="upvote-btn" disabled type="button"><i
+                class="bi bi-caret-up-fill"></i></button>
+        <span class="input-group-text" id="nvotes">{{ votes }}</span>
+        <button class="btn btn-secondary" id="downvote-btn" type="button"><i class="bi bi-caret-down-fill"></i></button>
+        {% elif showboth %}
+        <button class="btn btn-secondary" id="upvote-btn" type="button"><i class="bi bi-caret-up-fill"></i></button>
+        <span class="input-group-text" id="nvotes">{{ votes }}</span>
+        <button class="btn btn-secondary" id="downvote-btn" type="button"><i class="bi bi-caret-down-fill"></i></button>
+        {% else %}
+        <button class="btn btn-secondary" id="upvote-btn" type="button"><i class="bi bi-caret-up-fill"></i></button>
+        <span class="input-group-text" id="nvotes">{{ votes }}</span>
+        <button class="disabled btn btn-secondary" id="downvote-btn" disabled type="button"><i
+                class="bi bi-caret-down-fill"></i></button>
+        {% endif %}
+        {% else %}
+        <button class="disabled btn btn-secondary" id="upvote-btn" disabled type="button"><i
+                class="bi bi-caret-up-fill"></i></button>
+        <span class="input-group-text" id="nvotes">{{ votes }}</span>
+        <button class="disabled btn btn-secondary" id="downvote-btn" disabled type="button"><i
+                class="bi bi-caret-down-fill"></i></button>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated and user == question.created_by %}
+    <div class="btn-group">
+        <a class="btn btn-danger" href="{% url 'delete' question.id %}">delete</a>
+        <a class="btn btn-primary" href="{% url 'edit' question.pk %}">edit</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="my-3">
+    <div class="fs-3">Discussion</div>
+    {% if user.is_authenticated %}
+    <div class="discussion-form">
+        <form action="{% url 'make_comment' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="qid" id="qid" value="{{ question.id }}">
+            <input type="text" name="comment" id="comment" required class="form-control mb-2"
+                placeholder="write your comment here...">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-primary" type="submit">post</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+
+    <div class="p-2">
+        {% for comment in comments %}
+        <div id="c{{comment.id}}" class="comment">
+            <div class="me-3">
+                {% if comment.user.photo %}
+                <img src="{{comment.user.photo.url}}" width="40" height="40">
+                {% else %}
+                <div class="profile-icon">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="flex-grow-1">
+                <div class="mb-1">
+                    <span><a class="fw-bolder" href="{% url 'view_profile' comment.user.id %}">
+                            {{comment.user.username}}</a></span>
+                    <i class="bi bi-arrow-right"></i>
+                    <span>
+                        {{comment.body}}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                        {{ comment.updated }}
+                    </small>
+                </div>
+                {% if user == comment.user %}
+                <button class="btn btn-sm btn-outline-danger" onclick="delete_comment('{{comment.id}}')"
+                    id="delete-comment">
+                    <i class="bi bi-trash-fill"></i> delete
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="{% static 'quiz/js/question.js' %}"></script>
+{% endblock %}
